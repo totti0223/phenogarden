@@ -41,8 +41,7 @@ def update_module_readme(module_path):
 
 **Note:** {metadata.get('note', 'No additional notes')}
 
-{AUTO_GENERATED_END}
-    """
+{AUTO_GENERATED_END}""".strip()
     
     if os.path.exists(readme_path):
         with open(readme_path, "r", encoding="utf-8") as f:
