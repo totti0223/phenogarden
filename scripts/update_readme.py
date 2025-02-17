@@ -5,10 +5,70 @@ from PIL import Image
 MODULES_DIR = "./modules"
 README_FILE = "README.md"
 AUTO_GENERATED_MARKER = "<!-- AUTO-GENERATED-TABLE -->"
+
+README_FILENAME = "README.md"
+METADATA_FILENAME = "metadata.yaml"
+
+AUTO_GENERATED_START = "<!-- AUTO-GENERATED-START -->"
+AUTO_GENERATED_END = "<!-- AUTO-GENERATED-END -->"
+
 MONTAGE_FILE = "assets/thumbnail_montage.jpg"
 MONTAGE_SIZE = (500, 500)  # モンタージュの固定サイズ
 THUMBNAIL_MAX_SIZE = 100  # 最大サムネイルサイズ
 PADDING = 5  # 画像間の余白
+def update_module_readme(module_path):
+    """各モジュールのREADME.mdをmetadata.yamlの内容で更新する"""
+    readme_path = os.path.join(module_path, README_FILENAME)
+    metadata_path = os.path.join(module_path, METADATA_FILENAME)
+    
+    metadata = load_yaml(metadata_path)
+    
+    # metadataが空ならスキップ
+    if not metadata:
+        print(f"Skipping {module_path}, no metadata found.")
+        return
+    
+    auto_generated_content = f"""
+{AUTO_GENERATED_START}
+
+## {metadata.get('name', 'Module Name')}
+
+**Description:** {metadata.get('description', 'No description available')}
+
+**License:** {metadata.get('license', 'Unknown')}
+
+**Tags:** {', '.join(metadata.get('tag', ['None']))}
+
+**Note:** {metadata.get('note', 'No additional notes')}
+
+{AUTO_GENERATED_END}
+    """
+    
+    if os.path.exists(readme_path):
+        with open(readme_path, "r", encoding="utf-8") as f:
+            readme_content = f.read()
+        
+        # 既存の自動生成部分を置き換え
+        if AUTO_GENERATED_START in readme_content and AUTO_GENERATED_END in readme_content:
+            start_index = readme_content.index(AUTO_GENERATED_START)
+            end_index = readme_content.index(AUTO_GENERATED_END) + len(AUTO_GENERATED_END)
+            updated_content = readme_content[:start_index] + auto_generated_content + readme_content[end_index:]
+        else:
+            updated_content = readme_content + "\n\n" + auto_generated_content
+    else:
+        print(f"Creating new README.md for {module_path}")
+        updated_content = f"# {metadata.get('name', 'Module Name')}\n\n{auto_generated_content}"
+    
+    with open(readme_path, "w", encoding="utf-8") as f:
+        f.write(updated_content)
+    print(f"Updated {readme_path}")
+
+def update_all_module_readmes():
+    """全モジュールのREADME.mdを更新する"""
+    for module_name in sorted(os.listdir(MODULES_DIR)):
+        module_path = os.path.join(MODULES_DIR, module_name)
+        if os.path.isdir(module_path):
+            update_module_readme(module_path)
 
 def load_yaml(file_path):
     """YAMLファイルを読み込む"""
@@ -137,3 +197,6 @@ if __name__ == "__main__":
     montage_path = create_thumbnail_montage(thumbnails)
     update_readme()
     print("README.md を更新しました。")
+    update_all_module_readmes()
+    print("各モジュールのREADME.md を更新しました。")
+    

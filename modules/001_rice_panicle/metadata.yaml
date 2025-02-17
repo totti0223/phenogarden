@@ -7,7 +7,7 @@ source:
     - "https://github.com/SUNJHZAU/EOPT"
   data_repository:
     - "https://pan.baidu.com/s/1ht2bUoqNQUWUJT5fuXBBrQ?pwd=m4wm"
-license: Plant Phenomics Journal License
+license: Plant Phenomics Journal License / GPLv3 (yolov8 subsection)
 tag:
   - rice
   - panicle
