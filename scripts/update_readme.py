@@ -154,9 +154,9 @@ def collect_module_data():
             module_data.append({
                 "name": f"[{data.get('name', module_name)}](./modules/{module_name})",
                 "description": data.get("description", "説明なし"),
-                "publication": ", ".join(f"[url]({url})" for url in data.get("source", {}).get("publication", [])) or "なし",
-                "git_repository": ", ".join(f"[url]({url})" for url in data.get("source", {}).get("git_repository", [])) or "なし",
-                "data_repository": ", ".join(f"[url]({url})" for url in data.get("source", {}).get("data_repository", [])) or "なし",
+                "publication": ", ".join(f"[{url}]({url})" for url in data.get("source", {}).get("publication", [])) or "なし",
+                "git_repository": ", ".join(f"[{url}]({url})" for url in data.get("source", {}).get("git_repository", [])) or "なし",
+                "data_repository": ", ".join(f"[{url}]({url})" for url in data.get("source", {}).get("data_repository", [])) or "なし",
                 "license": data.get("license", "不明"),
                 "tags": ", ".join(data.get("tag", ["なし"])),
                 "note": data.get("note", "なし")
