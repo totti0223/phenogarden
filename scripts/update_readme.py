@@ -166,7 +166,7 @@ def collect_module_data():
 def generate_table():
     """Generate a table of modules in Markdown format"""
     module_data = collect_module_data()
-    table = "\n\n| Module Name | Description | Publication | Git Repository | Data Repository | License | Tags | Notes |\n"
+    table = "\n\n| Module Name | Description | Publication | Original Git Repository | Original Data Repository | License | Tags | Notes |\n"
     table += "|------------|------------------|-------------|--------------------|----------------------|----------------------|-----------------------------|------|\n"
     for module in module_data:
         table += f"| {module['name']} | {module['description']} | {module['publication']} | {module['git_repository']} | {module['data_repository']} | {module['license']} | {module['tags']} | {module['note']} |\n"
