@@ -1,0 +1,18 @@
+name: "Example Module"
+version: "1.0.0"
+description: "画像解析を行うモジュール"
+source:
+  publication:
+    - "https://hogehogehoge121234565.com"
+  git_repository:
+    - url1
+    - url2
+  data_repository:
+    - url3
+    - url4
+license: "MIT"
+tag:
+  - rice
+  - grain
+  - object detection
+  - shape

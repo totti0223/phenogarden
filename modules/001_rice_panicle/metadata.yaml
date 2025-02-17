@@ -1,0 +1,17 @@
+name: "Rice Intact Panicle Analysis"
+description: "grain counting, grain shape analysis"
+source:
+  publication:
+    - "https://spj.science.org/doi/10.34133/plantphenomics.0213"
+  git_repository:
+    - "https://github.com/SUNJHZAU/EOPT"
+  data_repository:
+    - "https://pan.baidu.com/s/1ht2bUoqNQUWUJT5fuXBBrQ?pwd=m4wm"
+license: Plant Phenomics Journal License
+tag:
+  - rice
+  - panicle
+  - grain number
+  - object detection
+  - grain shape
+note:
