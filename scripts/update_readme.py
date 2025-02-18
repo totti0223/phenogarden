@@ -18,6 +18,58 @@ THUMBNAIL_MAX_SIZE = 100  # 最大サムネイルサイズ
 PADDING = 5  # 画像間の余白
 MAX_THUMBNAILS = 3  # 表示するサムネイルの最大数
 
+def format_metadata(metadata):
+    """YAMLの内容をフォーマットして文字列に変換する"""
+    formatted_content = "\n".join(f"**{key.capitalize()}:** {', '.join(value) if isinstance(value, list) else value}"
+                                  for key, value in metadata.items())
+    return formatted_content
+
+def update_module_readme(module_path):
+    """各モジュールのREADME.mdをmetadata.yamlの内容で更新する"""
+    readme_path = os.path.join(module_path, README_FILENAME)
+    metadata_path = os.path.join(module_path, METADATA_FILENAME)
+    
+    metadata = load_yaml(metadata_path)
+    
+    if not metadata:
+        print(f"Skipping {module_path}, no metadata found.")
+        return
+    
+    auto_generated_content = f"""{AUTO_GENERATED_START}
+
+## Metadata
+
+{format_metadata(metadata)}
+
+{AUTO_GENERATED_END}""".strip()
+    
+    if os.path.exists(readme_path):
+        with open(readme_path, "r", encoding="utf-8") as f:
+            readme_content = f.read()
+        
+        if AUTO_GENERATED_START in readme_content and AUTO_GENERATED_END in readme_content:
+            start_index = readme_content.index(AUTO_GENERATED_START)
+            end_index = readme_content.index(AUTO_GENERATED_END) + len(AUTO_GENERATED_END)
+            updated_content = readme_content[:start_index] + auto_generated_content + readme_content[end_index:]
+        else:
+            updated_content = readme_content + "\n\n" + auto_generated_content
+    else:
+        print(f"Creating new README.md for {module_path}")
+        updated_content = f"# {metadata.get('name', 'Module Name')}\n\n{auto_generated_content}"
+    
+    with open(readme_path, "w", encoding="utf-8") as f:
+        f.write(updated_content)
+    print(f"Updated {readme_path}")
+
+
+def update_all_module_readmes():
+    """全モジュールのREADME.mdを更新する"""
+    for module_name in sorted(os.listdir(MODULES_DIR)):
+        module_path = os.path.join(MODULES_DIR, module_name)
+        if os.path.isdir(module_path):
+            update_module_readme(module_path)
+
+
 def load_yaml(file_path):
     """YAMLファイルを読み込む"""
     try:
@@ -95,3 +147,6 @@ def update_readme():
 if __name__ == "__main__":
     update_readme()
     print("README.md を更新しました。")
+    update_all_module_readmes()
+    print("各モジュールのREADME.md を更新しました。")
+    
