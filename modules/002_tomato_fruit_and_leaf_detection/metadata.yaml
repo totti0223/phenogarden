@@ -1,0 +1,17 @@
+name: "Tomato fruit and disease detection"
+description: "tomato fruit detection, leaf disease detection"
+source:
+  publication:
+    - https://spj.science.org/doi/10.34133/plantphenomics.0174
+  git_repository:
+    - https://github.com/RuiKangnj/TGI/tree/main
+  data_repository:
+    - https://drive.google.com/file/d/1G1E-6ADPoj9g6SUZs6URc2-tWRqulQ5I/view
+license: Plant Phenomics Journal License
+tag:
+  - tomato
+  - fruit
+  - disease
+  - object detection
+  - leaf
+note:
